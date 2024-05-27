@@ -11,6 +11,17 @@
 <title>mysite</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link href="<%=request.getContextPath()%>/assets/css/user.css" rel="stylesheet" type="text/css">
+<%
+	if ("success".equals(request.getParameter("result"))) {
+%>
+	<script>alert("성공적으로 수정되었습니다.")</script>
+<%
+	} else if ("fail".equals(request.getParameter("result"))){
+%>
+	<script>alert("수정에 실패하였습니다.")</script>
+<%
+	}
+%>
 </head>
 <body>
 	<div id="container">

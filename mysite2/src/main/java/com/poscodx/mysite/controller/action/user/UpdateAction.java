@@ -45,9 +45,11 @@ public class UpdateAction implements ActionServlet.Action {
 		if (result == 1) {
 			UserVo refreshUser = new UserDao().findByNo(no);		
 			session.setAttribute("authUser", refreshUser);
+			response.sendRedirect(request.getContextPath() + "/user?a=updateform&result=success");
+			return;
 		}
 		
-		response.sendRedirect(request.getContextPath());
+		response.sendRedirect(request.getContextPath() + "/user?a=updateform&result=fail");
 	}
 
 }

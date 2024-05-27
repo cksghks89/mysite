@@ -112,16 +112,16 @@ public class UserDao {
 			int count = 0;
 
 			if ("".equals(vo.getPassword())) {
+				pstmt2.setString(++count, vo.getName());
+				pstmt2.setString(++count, vo.getGender());
+				pstmt2.setLong(++count, vo.getNo());
+				result = pstmt2.executeUpdate();
+			} else {
 				pstmt1.setString(++count, vo.getName());
 				pstmt1.setString(++count, vo.getPassword());
 				pstmt1.setString(++count, vo.getGender());
 				pstmt1.setLong(++count, vo.getNo());
 				result = pstmt1.executeUpdate();
-			} else {
-				pstmt2.setString(++count, vo.getName());
-				pstmt2.setString(++count, vo.getGender());
-				pstmt2.setLong(++count, vo.getNo());
-				result = pstmt2.executeUpdate();
 			}
 		} catch (SQLException e) {
 			System.out.println("Error:" + e);
