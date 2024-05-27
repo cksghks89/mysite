@@ -38,6 +38,11 @@
 			<version>2.2</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.poscodx</groupId>
+			<artifactId>Chapter03</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>
