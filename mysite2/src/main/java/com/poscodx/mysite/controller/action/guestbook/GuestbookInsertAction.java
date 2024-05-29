@@ -18,8 +18,6 @@ public class GuestbookInsertAction implements ActionServlet.Action {
 		String password = request.getParameter("pass");
 		String content = request.getParameter("content");
 		
-		content = content.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-
 		GuestbookVo vo = new GuestbookVo();
 		vo.setName(name);
 		vo.setPassword(password);

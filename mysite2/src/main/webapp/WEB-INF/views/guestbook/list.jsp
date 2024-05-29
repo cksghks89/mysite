@@ -60,7 +60,7 @@ pageContext.setAttribute("newline", "\n");
 									</td>
 								</tr>
 								<tr>
-									<td colspan=4>${fn:replace(fn:replace(fn:replace(vo.contents, newline, "<br/>"), '<', '&lt;'), '>', '&gt;') }</td>
+									<td colspan=4>${fn:replace(fn:replace(fn:replace(vo.contents, '<', '&lt;'), '>', '%gt;'), newline, '<br/>') }</td>
 								</tr>
 							</table> <br />
 						</li>
