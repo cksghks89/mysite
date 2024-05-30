@@ -52,17 +52,25 @@
 				<div class="pager">
 					<ul>
 						<li>
-							<c:if test="${pageResult.prev }">
-								<a href="${pageContext.servletContext.contextPath }/board?a=list&p=${pageResult.beginPage - 1}&kwd=${pageResult.query}" />
-							</c:if>
-						<<</li>
-						
+							<c:choose>
+								<c:when test="${pageResult.prev }">
+									<a href="${pageContext.servletContext.contextPath }/board?a=list&p=${pageResult.beginPage - 1}&kwd=${pageResult.query}"><<</a>
+								</c:when>
+								<c:otherwise>
+									<<
+								</c:otherwise>
+							</c:choose>
+						</li>
 						<li>
-							<c:if test="${pageResult.prevTab }">
-								<a href="${pageContext.servletContext.contextPath }/board?a=list&p=${pageResult.pageNo - 1}&kwd=${pageResult.query}" />
-							</c:if>
-						◀</li>
-						
+							<c:choose>
+								<c:when test="${pageResult.prevTab }">
+									<a href="${pageContext.servletContext.contextPath }/board?a=list&p=${pageResult.pageNo - 1}&kwd=${pageResult.query}">◀</a>
+								</c:when>
+								<c:otherwise>
+									◀
+								</c:otherwise>
+							</c:choose>
+						</li>
 						
 						<c:forEach begin='${pageResult.beginPage}' end="${pageResult.beginPage + pageResult.tabSize - 1}" var="no">
 							<c:choose>
@@ -73,22 +81,37 @@
 									<li>
 								</c:otherwise>
 							</c:choose>
-								<c:if test='${no <= pageResult.endPage }'>
-									<a href="${pageContext.servletContext.contextPath }/board?a=list&p=${no}&kwd=${pageResult.query}">
-								</c:if>
-							${no }</li>
+							<c:choose>
+								<c:when test="${no <= pageResult.endPage }">
+									<a href="${pageContext.servletContext.contextPath }/board?a=list&p=${no}&kwd=${pageResult.query}">${no}</a>
+								</c:when>
+								<c:otherwise>
+									${no }
+								</c:otherwise>
+							</c:choose>
+							</li>
 						</c:forEach>
 						
 						<li>
-							<c:if test="${pageResult.nextTab }">
-								<a href="${pageContext.servletContext.contextPath }/board?a=list&p=${pageResult.pageNo + 1}&kwd=${pageResult.query}" />
-							</c:if>
-						▶</li>
+							<c:choose>
+								<c:when test="${pageResult.nextTab }">
+									<a href="${pageContext.servletContext.contextPath }/board?a=list&p=${pageResult.pageNo + 1}&kwd=${pageResult.query}">▶</a>
+								</c:when>
+								<c:otherwise>
+									▶
+								</c:otherwise>
+							</c:choose>
+						</li>
 						<li>
-							<c:if test="${pageResult.next }">
-								<a href="${pageContext.servletContext.contextPath }/board?a=list&p=${pageResult.beginPage + pageResult.tabSize}&kwd=${pageResult.query}" />
-							</c:if>
-						>></li>
+							<c:choose>
+								<c:when test="${pageResult.next }">
+									<a href="${pageContext.servletContext.contextPath }/board?a=list&p=${pageResult.beginPage + pageResult.tabSize}&kwd=${pageResult.query}">>></a>
+								</c:when>
+								<c:otherwise>
+									>>
+								</c:otherwise>
+							</c:choose>
+						</li>
 					</ul>
 				</div>
 				<!-- pager 추가 -->
