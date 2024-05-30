@@ -27,25 +27,35 @@
 						<th>작성일</th>
 						<th>&nbsp;</th>
 					</tr>
-					<c:set var="countNo" value="${pageResult.startNo }" />
-					<c:forEach items="${list}" var="vo" varStatus="status">
+				
+				<c:choose>
+					<c:when test='${empty list || fn:length(list) == 0 }'>
 						<tr>
-							<td>${countNo - status.index }</td>
-							<td style="text-align:left; padding-left:${20 * vo.depth}px">
-								<c:if test='${vo.depth > 0 }'>
-									<img src='${pageContext.request.contextPath }/assets/images/reply.png' />	
+							<td colspan="5">조회된 게시글이 없습니다.</td>
+						</tr>
+					</c:when>
+					<c:otherwise>
+						<c:set var="countNo" value="${pageResult.startNo }" />
+						<c:forEach items="${list}" var="vo" varStatus="status">
+							<tr>
+								<td>${countNo - status.index }</td>
+								<td style="text-align:left; padding-left:${20 * vo.depth}px">
+									<c:if test='${vo.depth > 0 }'>
+										<img src='${pageContext.request.contextPath }/assets/images/reply.png' />	
+									</c:if>
+									<a href="${pageContext.request.contextPath }/board?a=view&no=${vo.no}&p=${pageResult.pageNo}&kwd=${pageResult.query}">${vo.title }</a>
+								</td>
+								<td>${vo.userName }</td>
+								<td>${vo.hit }</td>
+								<td>${vo.regDate }</td>
+								
+								<c:if test='${vo.userNo == authUser.no }'>
+									<td><a href="${pageContext.servletContext.contextPath }/board?a=delete&no=${vo.no}&p=${pageResult.pageNo}&kwd=${pageResult.query}" class="del">삭제</a></td>
 								</c:if>
-								<a href="${pageContext.request.contextPath }/board?a=view&no=${vo.no}&p=${pageResult.pageNo}&kwd=${pageResult.query}">${vo.title }</a>
-							</td>
-							<td>${vo.userName }</td>
-							<td>${vo.hit }</td>
-							<td>${vo.regDate }</td>
-							
-							<c:if test='${vo.userNo == authUser.no }'>
-								<td><a href="${pageContext.servletContext.contextPath }/board?a=delete&no=${vo.no}&p=${pageResult.pageNo}&kwd=${pageResult.query}" class="del">삭제</a></td>
-							</c:if>
-						</tr>						
-					</c:forEach>
+							</tr>						
+						</c:forEach>
+					</c:otherwise>
+				</c:choose>	
 				</table>
 				
 				<!-- pager 추가 -->

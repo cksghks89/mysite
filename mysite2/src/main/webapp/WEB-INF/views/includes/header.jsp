@@ -15,7 +15,7 @@
 				<li><a href="${pageContext.request.contextPath }/user?a=updateform">회원정보수정</a><li>
 				<li><a href="${pageContext.request.contextPath }/user?a=logout">로그아웃</a><li>
 				<li>${authUser.name }님 안녕하세요 ^^;</li>
-			</c:otherwise>		
+			</c:otherwise>
 		</c:choose>
 	</ul>
 </div>
