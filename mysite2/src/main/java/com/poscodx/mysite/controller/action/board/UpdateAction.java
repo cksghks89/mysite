@@ -49,6 +49,11 @@ public class UpdateAction implements Action {
 
 		String title = request.getParameter("title");
 		String contents = request.getParameter("content");
+		
+		if (title == null || "".equals(title)) {
+			response.sendRedirect(request.getContextPath());
+			return;
+		}
 
 		BoardVo vo = new BoardVo();
 		vo.setNo(Long.parseLong(no));

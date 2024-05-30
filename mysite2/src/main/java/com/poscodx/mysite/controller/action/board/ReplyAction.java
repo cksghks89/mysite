@@ -50,6 +50,11 @@ public class ReplyAction implements Action {
 		String parentNo = request.getParameter("parentNo");
 		String title = request.getParameter("title");
 		String contents = request.getParameter("content");
+		
+		if (title == null || "".equals(title)) {
+			response.sendRedirect(request.getContextPath());
+			return;
+		}
 
 		BoardVo boardVo = new BoardVo();
 		boardVo.setTitle(title);

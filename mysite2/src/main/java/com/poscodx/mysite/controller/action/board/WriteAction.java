@@ -48,7 +48,12 @@ public class WriteAction implements Action {
 
 		String title = request.getParameter("title");
 		String contents = request.getParameter("content");
-
+		
+		if (title == null || "".equals(title)) {
+			response.sendRedirect(request.getContextPath());
+			return;
+		}
+		
 		BoardVo boardVo = new BoardVo();
 		boardVo.setTitle(title);
 		boardVo.setContents(contents);
