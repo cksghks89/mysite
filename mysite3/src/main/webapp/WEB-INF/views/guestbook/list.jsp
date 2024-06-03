@@ -20,8 +20,7 @@ pageContext.setAttribute("newline", "\n");
 		<c:import url="/WEB-INF/views/includes/header.jsp" />
 		<div id="content">
 			<div id="guestbook">
-				<form action="${pageContext.request.contextPath }/guestbook" method="post">
-					<input type="hidden" name="a" value="insert">
+				<form action="${pageContext.request.contextPath }/guestbook/add" method="post">
 					<table>
 						<tr>
 							<td>이름</td>
@@ -30,12 +29,12 @@ pageContext.setAttribute("newline", "\n");
 							</td>
 							<td>비밀번호</td>
 							<td>
-								<input type="password" name="pass">
+								<input type="password" name="password">
 							</td>
 						</tr>
 						<tr>
 							<td colspan=4>
-								<textarea name="content" id="content"></textarea>
+								<textarea name="contents" id="content"></textarea>
 							</td>
 						</tr>
 						<tr>
@@ -55,7 +54,7 @@ pageContext.setAttribute("newline", "\n");
 									<td>${vo.name }</td>
 									<td>${vo.regDate }</td>
 									<td>
-										<a href="${pageContext.request.contextPath }/guestbook?a=deleteform&no=${vo.no }">삭제</a>
+										<a href="${pageContext.request.contextPath }/guestbook/delete/${vo.no }">삭제</a>
 									</td>
 								</tr>
 								<tr>
