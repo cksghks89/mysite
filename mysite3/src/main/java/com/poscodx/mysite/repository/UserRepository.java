@@ -71,10 +71,6 @@ public class UserRepository {
 				result.setName(name);
 			}
 			rs.close();
-			
-			if(true) {
-				throw new SQLException();				
-			}
 		} catch (SQLException e) {
 			throw new UserRepositoryException(e.toString());
 		}
