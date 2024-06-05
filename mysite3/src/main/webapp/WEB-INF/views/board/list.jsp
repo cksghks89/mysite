@@ -14,8 +14,8 @@
 		<c:import url="/WEB-INF/views/includes/header.jsp"/>
 		<div id="content">
 			<div id="board">
-				<form id="search_form" action="${pageContext.servletContext.contextPath }/board?a=search" method="post">
-					<input type="text" id="kwd" name="kwd" value="">
+				<form id="search_form" action="${pageContext.servletContext.contextPath }/board/search" method="post">
+					<input type="text" id="kwd" name="query" value="">
 					<input type="submit" value="찾기">
 				</form>
 				<table class="tbl-ex">
@@ -43,14 +43,16 @@
 									<c:if test='${vo.depth > 0 }'>
 										<img src='${pageContext.request.contextPath }/assets/images/reply.png' />	
 									</c:if>
-									<a href="${pageContext.request.contextPath }/board?a=view&no=${vo.no}&p=${pageResult.pageNo}&kwd=${pageResult.query}">${vo.title }</a>
+									<a href="${pageContext.request.contextPath }/board/view/${vo.no}?pageNo=${pageResult.pageNo}&query=${pageResult.query}">${vo.title }</a>
 								</td>
 								<td>${vo.userName }</td>
 								<td>${vo.hit }</td>
 								<td>${vo.regDate }</td>
 								
 								<c:if test='${vo.userNo == authUser.no }'>
-									<td><a href="${pageContext.servletContext.contextPath }/board?a=delete&no=${vo.no}&p=${pageResult.pageNo}&kwd=${pageResult.query}" class="del">삭제</a></td>
+									<td>
+										<a href="${pageContext.servletContext.contextPath }/board/delete/${vo.no}?pageNo=${pageResult.pageNo}&query=${pageResult.query}" class="del"><img src='${pageContext.request.contextPath }/assets/images/recycle.png' /></a>
+									</td>
 								</c:if>
 							</tr>						
 						</c:forEach>
@@ -64,7 +66,7 @@
 						<li>
 							<c:choose>
 								<c:when test="${pageResult.prev }">
-									<a href="${pageContext.servletContext.contextPath }/board?a=list&p=${pageResult.beginPage - 1}&kwd=${pageResult.query}"><<</a>
+									<a href="${pageContext.servletContext.contextPath }/board/list?pageNo=${pageResult.beginPage - 1}&query=${pageResult.query}"><<</a>
 								</c:when>
 								<c:otherwise>
 									<<
@@ -74,7 +76,7 @@
 						<li>
 							<c:choose>
 								<c:when test="${pageResult.prevTab }">
-									<a href="${pageContext.servletContext.contextPath }/board?a=list&p=${pageResult.pageNo - 1}&kwd=${pageResult.query}">◀</a>
+									<a href="${pageContext.servletContext.contextPath }/board/list?pageNo=${pageResult.pageNo - 1}&query=${pageResult.query}">◀</a>
 								</c:when>
 								<c:otherwise>
 									◀
@@ -93,7 +95,7 @@
 							</c:choose>
 							<c:choose>
 								<c:when test="${no <= pageResult.endPage }">
-									<a href="${pageContext.servletContext.contextPath }/board?a=list&p=${no}&kwd=${pageResult.query}">${no}</a>
+									<a href="${pageContext.servletContext.contextPath }/board/list?pageNo=${no}&query=${pageResult.query}">${no}</a>
 								</c:when>
 								<c:otherwise>
 									${no }
@@ -105,7 +107,7 @@
 						<li>
 							<c:choose>
 								<c:when test="${pageResult.nextTab }">
-									<a href="${pageContext.servletContext.contextPath }/board?a=list&p=${pageResult.pageNo + 1}&kwd=${pageResult.query}">▶</a>
+									<a href="${pageContext.servletContext.contextPath }/board/list?pageNo=${pageResult.pageNo + 1}&query=${pageResult.query}">▶</a>
 								</c:when>
 								<c:otherwise>
 									▶
@@ -115,7 +117,7 @@
 						<li>
 							<c:choose>
 								<c:when test="${pageResult.next }">
-									<a href="${pageContext.servletContext.contextPath }/board?a=list&p=${pageResult.beginPage + pageResult.tabSize}&kwd=${pageResult.query}">>></a>
+									<a href="${pageContext.servletContext.contextPath }/board/list?pageNo=${pageResult.beginPage + pageResult.tabSize}&query=${pageResult.query}">>></a>
 								</c:when>
 								<c:otherwise>
 									>>
@@ -128,8 +130,8 @@
 				
 				<c:if test='${not empty authUser }'>
 					<div class="bottom">
-						<a href="${pageContext.request.contextPath }/board?a=writeform&p=${pageResult.pageNo}&kwd=${pageResult.query}" id="new-book">글쓰기</a>
-					</div>				
+						<a href="${pageContext.request.contextPath }/board/write?pageNo=${pageResult.pageNo}&query=${pageResult.query}" id="new-book">글쓰기</a>
+					</div>
 				</c:if>
 			</div>
 		</div>

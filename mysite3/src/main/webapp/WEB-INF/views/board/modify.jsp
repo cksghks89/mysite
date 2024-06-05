@@ -15,9 +15,9 @@
 		<c:import url="/WEB-INF/views/includes/header.jsp" />
 		<div id="content">
 			<div id="board">
-				<form class="board-form" method="post" action="${pageContext.request.contextPath }/board?a=update&no=${boardVo.no}">
-					<input type = "hidden" name = "p" value="${page.pageNo }" />
-					<input type = "hidden" name = "kwd" value="${page.query }" />
+				<form class="board-form" method="post" action="${pageContext.request.contextPath }/board/update/${boardVo.no}">
+					<input type = "hidden" name = "pageNo" value="${page.pageNo }" />
+					<input type = "hidden" name = "query" value="${page.query }" />
 					<table class="tbl-ex">
 						<tr>
 							<th colspan="2">글수정</th>
@@ -29,12 +29,12 @@
 						<tr>
 							<td class="label">내용</td>
 							<td>
-								<textarea id="content" name="content">${boardVo.contents }</textarea>
+								<textarea id="content" name="contents">${boardVo.contents }</textarea>
 							</td>
 						</tr>
 					</table>
 					<div class="bottom">
-						<a href="${pageContext.request.contextPath }/board?a=view&no=${boardVo.no}&p=${page.pageNo}&kwd=${page.query}">취소</a>
+						<a href="${pageContext.request.contextPath }/board/view/${boardVo.no}?pageNo=${page.pageNo}&query=${page.query}">취소</a>
 						<input type="submit" value="수정">
 					</div>
 				</form>				
