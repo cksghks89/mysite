@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.poscodx.mysite.repository.BoardRepository;
 import com.poscodx.mysite.vo.BoardVo;
@@ -19,6 +20,7 @@ public class BoardService {
 		this.boardRepository = boardRepository;
 	}
 	
+	@Transactional
 	public void addContents(BoardVo vo) {
 		if (vo.getgNo() != null) {
 			boardRepository.updateOrder(vo);
@@ -28,6 +30,7 @@ public class BoardService {
 		boardRepository.insert(vo);
 	}
 	
+	@Transactional
 	public BoardVo getContents(Long no) {
 		BoardVo vo = boardRepository.findByNo(no);
 		if (vo != null) {
@@ -48,6 +51,7 @@ public class BoardService {
 		boardRepository.deleteByNoAndUserNo(boardNo, no);
 	}
 	
+	@Transactional
 	public Map<String, Object> getContentsList(Page page) {
 		List<BoardVo> list = boardRepository.findAll(page);
 		

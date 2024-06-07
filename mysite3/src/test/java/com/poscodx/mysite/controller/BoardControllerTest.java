@@ -1,8 +1,5 @@
 package com.poscodx.mysite.controller;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -63,15 +60,16 @@ public class BoardControllerTest {
 	
 	
 	@Test
-	public void boardWriteFormTest() throws Exception {
+	public void boardWriteGetTest() throws Exception {
 		//given
 		Page page = new Page(2, 5);
 		page.setQuery("hello");
 		
 		// when, then
-		mockMvc.perform(MockMvcRequestBuilders.get("/write"))
+		mockMvc.perform(MockMvcRequestBuilders.get("/board/write?pageNo=2&query=hello"))
 			.andExpect(MockMvcResultMatchers.status().isOk())
-			.andExpect(MockMvcResultMatchers.model().attributeExists("page"));
+			.andExpect(MockMvcResultMatchers.model().attributeExists("page"))
+			.andExpect(MockMvcResultMatchers.model().attribute("page", page));
 	}
 
 }
