@@ -69,8 +69,8 @@ public class BoardControllerTest {
 		page.setQuery("hello");
 		
 		// when, then
-		mockMvc.perform(MockMvcRequestBuilders.get("/write?pageNo=1&query=hello"))
-			.andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+		mockMvc.perform(MockMvcRequestBuilders.get("/write"))
+			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.model().attributeExists("page"));
 	}
 
