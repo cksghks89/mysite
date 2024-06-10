@@ -1,5 +1,8 @@
 package com.poscodx.mysite.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +17,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -23,6 +28,7 @@ import com.poscodx.mysite.service.BoardService;
 import com.poscodx.mysite.vo.BoardVo;
 import com.poscodx.mysite.vo.Page;
 import com.poscodx.mysite.vo.PageResult;
+import com.poscodx.mysite.vo.UserVo;
 
 @ExtendWith(MockitoExtension.class)
 public class BoardControllerTest {
@@ -35,7 +41,7 @@ public class BoardControllerTest {
 	MockMvc mockMvc;
 
 	@BeforeEach
-	public void beforeEach() {
+	public void setUp() {
 		mockMvc = MockMvcBuilders.standaloneSetup(boardController).build();
 	}
 
@@ -48,28 +54,48 @@ public class BoardControllerTest {
 
 		BDDMockito.given(boardService.getContentsList(ArgumentMatchers.any())).willReturn(map);
 
-		// when, then
-		mockMvc.perform(MockMvcRequestBuilders.get("/board"))
-				.andExpect(MockMvcResultMatchers.status().isOk())
+		// when
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/board"));
+
+		// then
+		resultActions.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.model().attributeExists("list"))
 				.andExpect(MockMvcResultMatchers.model().attributeExists("pageResult"))
 				.andExpect(MockMvcResultMatchers.model().attribute("list", Matchers.hasSize(2)));
 
 		Mockito.verify(boardService).getContentsList(ArgumentMatchers.any());
 	}
-	
-	
+
 	@Test
 	public void boardWriteGetTest() throws Exception {
-		//given
+		// given
 		Page page = new Page(2, 5);
 		page.setQuery("hello");
+
+		// when
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/board/write?pageNo=2&query=hello"));
+
+		// then
+		resultActions.andExpect(MockMvcResultMatchers.status().isOk()).andExpect(model().attributeExists("page"))
+				.andExpect(model().attribute("page", Matchers.hasProperty("pageNo", Matchers.is(2))))
+				.andExpect(model().attribute("page", Matchers.hasProperty("query", Matchers.is("hello"))))
+				.andExpect(forwardedUrl("board/write"));
+	}
+
+	@Test
+	public void boardWriterPostTest() {
+		// given
+		MockHttpSession session = new MockHttpSession();
+		session.setAttribute("authUser", new UserVo());
 		
-		// when, then
-		mockMvc.perform(MockMvcRequestBuilders.get("/board/write?pageNo=2&query=hello"))
-			.andExpect(MockMvcResultMatchers.status().isOk())
-			.andExpect(MockMvcResultMatchers.model().attributeExists("page"))
-			.andExpect(MockMvcResultMatchers.model().attribute("page", page));
+		BoardVo vo = new BoardVo();
+		vo.setTitle("dooly");
+		vo.setContents("hello world");
+		
+		// when
+		
+		// then
+		
 	}
 
 }

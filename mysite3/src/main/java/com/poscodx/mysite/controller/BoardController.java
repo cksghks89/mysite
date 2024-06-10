@@ -29,7 +29,13 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/write", method = RequestMethod.GET)
-	public String write(Model model, Page page) {
+	public String write(HttpSession session, Model model, Page page) {
+		// access control
+		UserVo authUser = (UserVo) session.getAttribute("authUser");
+		if (authUser == null) {
+			return "redirect:/";
+		}
+		/////////////////
 		model.addAttribute("page", page);
 		return "board/write";
 	}
@@ -136,8 +142,7 @@ public class BoardController {
 		vo.setNo(no);
 		boardService.updateContents(vo);
 
-		return String.format("redirect:/board/view/%d?pageNo=%d&query=%s", no, page.getPageNo(),
-				page.getQuery());
+		return String.format("redirect:/board/view/%d?pageNo=%d&query=%s", no, page.getPageNo(), page.getQuery());
 	}
 
 	@RequestMapping("/search")

@@ -62,6 +62,7 @@ public class BoardService {
 		map.put("list", list);
 		map.put("pageResult", pageResult);
 		
+		
 		return map;
 	}
 	
