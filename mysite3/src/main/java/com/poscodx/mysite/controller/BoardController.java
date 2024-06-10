@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.poscodx.mysite.security.Auth;
+import com.poscodx.mysite.security.AuthUser;
 import com.poscodx.mysite.service.BoardService;
 import com.poscodx.mysite.vo.BoardVo;
 import com.poscodx.mysite.vo.Page;
@@ -28,18 +30,14 @@ public class BoardController {
 		return "board/list";
 	}
 
+	@Auth
 	@RequestMapping(value = "/write", method = RequestMethod.GET)
 	public String write(HttpSession session, Model model, Page page) {
-		// access control
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		if (authUser == null) {
-			return "redirect:/";
-		}
-		/////////////////
 		model.addAttribute("page", page);
 		return "board/write";
 	}
 
+	@Auth
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
 	public String write(HttpSession session, Page page, BoardVo vo) {
 		// access control
@@ -55,6 +53,7 @@ public class BoardController {
 		return String.format("redirect:/board?pageNo=%d&query=%s", 1, "");
 	}
 
+	@Auth
 	@RequestMapping("/delete/{no}")
 	public String delete(HttpSession session, Page page, @PathVariable("no") Long no) {
 		// access control
@@ -68,21 +67,15 @@ public class BoardController {
 		return String.format("redirect:/board?pageNo=%d&query=%s", page.getPageNo(), page.getQuery());
 	}
 
+	@Auth
 	@RequestMapping(value = "/reply/{no}", method = RequestMethod.GET)
 	public String reply(Model model, HttpSession session, Page page, @PathVariable("no") Long no) {
-		// access control
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		if (authUser == null) {
-			return "redirect:/";
-		}
-		/////////////////
-
 		model.addAttribute("page", page);
 		model.addAttribute("parentNo", no);
-
 		return "board/reply";
 	}
 
+	@Auth
 	@RequestMapping(value = "/reply", method = RequestMethod.POST)
 	public String reply(HttpSession session, Page page, BoardVo vo) {
 		// access control
@@ -113,14 +106,10 @@ public class BoardController {
 		return "board/view";
 	}
 
+	@Auth
 	@RequestMapping(value = "/update/{no}", method = RequestMethod.GET)
-	public String update(Model model, HttpSession session, Page page, @PathVariable("no") Long no) {
-		// access control
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		if (authUser == null) {
-			return "redirect:/";
-		}
-		/////////////////
+	public String update(@AuthUser UserVo authUser, Model model, Page page, @PathVariable("no") Long no) {
+//		UserVo authUser = (UserVo) session.getAttribute("authUser");
 
 		BoardVo boardVo = boardService.getContents(no, authUser.getNo());
 		model.addAttribute("boardVo", boardVo);
@@ -129,6 +118,7 @@ public class BoardController {
 		return "board/modify";
 	}
 
+	@Auth
 	@RequestMapping(value = "/update/{no}", method = RequestMethod.POST)
 	public String update(HttpSession session, Page page, BoardVo vo, @PathVariable Long no) {
 		// access control
