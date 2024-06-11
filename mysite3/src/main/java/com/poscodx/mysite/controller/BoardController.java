@@ -1,5 +1,7 @@
 package com.poscodx.mysite.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import com.poscodx.mysite.security.AuthUser;
 import com.poscodx.mysite.service.BoardService;
 import com.poscodx.mysite.vo.BoardVo;
 import com.poscodx.mysite.vo.Page;
+import com.poscodx.mysite.vo.PageResult;
 import com.poscodx.mysite.vo.UserVo;
 import com.poscodx.mysite.web.WebUtil;
 
@@ -27,7 +30,15 @@ public class BoardController {
 
 	@RequestMapping({ "", "/list" })
 	public String index(Model model, Page page) {
-		model.addAllAttributes(boardService.getContentsList(page));
+		Map<String, Object> contentsList = boardService.getContentsList(page);
+		PageResult pageResult = (PageResult) contentsList.get("pageResult");
+		if (pageResult.getPageNo() > pageResult.getEndPage()) {
+			return "redirect:/board";
+		}
+		
+		model.addAllAttributes(contentsList);
+		
+		
 		return "board/list";
 	}
 
