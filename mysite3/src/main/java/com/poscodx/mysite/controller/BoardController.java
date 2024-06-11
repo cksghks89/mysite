@@ -14,6 +14,7 @@ import com.poscodx.mysite.service.BoardService;
 import com.poscodx.mysite.vo.BoardVo;
 import com.poscodx.mysite.vo.Page;
 import com.poscodx.mysite.vo.UserVo;
+import com.poscodx.mysite.web.WebUtil;
 
 @Controller
 @RequestMapping("/board")
@@ -32,7 +33,7 @@ public class BoardController {
 
 	@Auth
 	@RequestMapping(value = "/write", method = RequestMethod.GET)
-	public String write(HttpSession session, Model model, Page page) {
+	public String write(Model model, Page page) {
 		model.addAttribute("page", page);
 		return "board/write";
 	}
@@ -50,7 +51,8 @@ public class BoardController {
 	@RequestMapping("/delete/{no}")
 	public String delete(@AuthUser UserVo authUser, Page page, @PathVariable("no") Long no) {
 		boardService.deleteContents(no, authUser.getNo());
-		return String.format("redirect:/board?pageNo=%d&query=%s", page.getPageNo(), page.getQuery());
+		return String.format("redirect:/board?pageNo=%d&query=%s", page.getPageNo(),
+				WebUtil.encodeURL(page.getQuery(), "utf-8"));
 	}
 
 	@Auth
@@ -74,7 +76,8 @@ public class BoardController {
 
 		boardService.addContents(vo);
 
-		return String.format("redirect:/board?pageNo=%d&query=%s", page.getPageNo(), page.getQuery());
+		return String.format("redirect:/board?pageNo=%d&query=%s", page.getPageNo(),
+				WebUtil.encodeURL(page.getQuery(), "utf-8"));
 	}
 
 	@RequestMapping("/view/{no}")
@@ -102,11 +105,13 @@ public class BoardController {
 		vo.setNo(no);
 		boardService.updateContents(vo);
 
-		return String.format("redirect:/board/view/%d?pageNo=%d&query=%s", no, page.getPageNo(), page.getQuery());
+		return String.format("redirect:/board/view/%d?pageNo=%d&query=%s", no, page.getPageNo(),
+				WebUtil.encodeURL(page.getQuery(), "utf-8"));
 	}
 
 	@RequestMapping("/search")
 	public String search(Page page) {
-		return String.format("redirect:/board?pageNo=%d&query=%s", page.getPageNo(), page.getQuery());
+		return String.format("redirect:/board?pageNo=%d&query=%s", page.getPageNo(),
+				WebUtil.encodeURL(page.getQuery(), "utf-8"));
 	}
 }
