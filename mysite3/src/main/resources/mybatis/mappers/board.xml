@@ -5,7 +5,7 @@
 <mapper namespace="board">
 	<select id="findAll" parameterType="map" resultType="boardvo">
 	 	<![CDATA[
-		 	select a.no, a.title, a.contents, a.hit, date_format(a.reg_date, '%Y-%m-%d %h:%i:%s') 'regDate', a.g_no 'GNo', a.o_no 'ONo', a.depth, a.user_no 'userNo', b.name
+		 	select a.no, a.title, a.contents, a.hit, date_format(a.reg_date, '%Y-%m-%d %h:%i:%s') 'regDate', a.g_no 'GNo', a.o_no 'ONo', a.depth, a.user_no 'userNo', b.name 'userName'
 			from board a join user b on a.user_no = b.no
 			where a.title like '%${query}%' or a.contents like '%${query}%'
 			order by g_no desc, o_no asc

@@ -44,22 +44,14 @@ public class UserController {
 	@Auth
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
 	public String update(@AuthUser UserVo authUser, Model model) {
-//		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		
 		UserVo vo = userService.getuser(authUser.getNo());
 		model.addAttribute("userVo", vo);
 		return "user/update";
 	}
 	
+	@Auth
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public String update(HttpSession session, UserVo vo, Model model) {
-		// access control
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		if (authUser == null) {
-			return "redirect:/";
-		}
-		/////////////////////
-		
+	public String update(@AuthUser UserVo authUser, UserVo vo, Model model) {
 		vo.setNo(authUser.getNo());
 		userService.update(vo);
 		

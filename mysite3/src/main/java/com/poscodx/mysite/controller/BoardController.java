@@ -39,14 +39,7 @@ public class BoardController {
 
 	@Auth
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
-	public String write(HttpSession session, Page page, BoardVo vo) {
-		// access control
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		if (authUser == null) {
-			return "redirect:/";
-		}
-		/////////////////
-
+	public String write(@AuthUser UserVo authUser, Page page, BoardVo vo) {
 		vo.setUserNo(authUser.getNo());
 		boardService.addContents(vo);
 
@@ -55,14 +48,7 @@ public class BoardController {
 
 	@Auth
 	@RequestMapping("/delete/{no}")
-	public String delete(HttpSession session, Page page, @PathVariable("no") Long no) {
-		// access control
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		if (authUser == null) {
-			return "redirect:/";
-		}
-		/////////////////
-
+	public String delete(@AuthUser UserVo authUser, Page page, @PathVariable("no") Long no) {
 		boardService.deleteContents(no, authUser.getNo());
 		return String.format("redirect:/board?pageNo=%d&query=%s", page.getPageNo(), page.getQuery());
 	}
@@ -77,14 +63,7 @@ public class BoardController {
 
 	@Auth
 	@RequestMapping(value = "/reply", method = RequestMethod.POST)
-	public String reply(HttpSession session, Page page, BoardVo vo) {
-		// access control
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		if (authUser == null) {
-			return "redirect:/";
-		}
-		/////////////////
-
+	public String reply(@AuthUser UserVo authUser, Page page, BoardVo vo) {
 		BoardVo parent = boardService.getContents(vo.getNo());
 		if (parent != null) {
 			vo.setgNo(parent.getgNo());
@@ -109,8 +88,6 @@ public class BoardController {
 	@Auth
 	@RequestMapping(value = "/update/{no}", method = RequestMethod.GET)
 	public String update(@AuthUser UserVo authUser, Model model, Page page, @PathVariable("no") Long no) {
-//		UserVo authUser = (UserVo) session.getAttribute("authUser");
-
 		BoardVo boardVo = boardService.getContents(no, authUser.getNo());
 		model.addAttribute("boardVo", boardVo);
 		model.addAttribute("page", page);
@@ -120,14 +97,7 @@ public class BoardController {
 
 	@Auth
 	@RequestMapping(value = "/update/{no}", method = RequestMethod.POST)
-	public String update(HttpSession session, Page page, BoardVo vo, @PathVariable Long no) {
-		// access control
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		if (authUser == null) {
-			return "redirect:/";
-		}
-		/////////////////
-
+	public String update(@AuthUser UserVo authUser, Page page, BoardVo vo, @PathVariable Long no) {
 		vo.setUserNo(authUser.getNo());
 		vo.setNo(no);
 		boardService.updateContents(vo);
