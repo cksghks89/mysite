@@ -47,4 +47,10 @@ public class SiteVo {
 		this.description = description;
 	}
 
+	@Override
+	public String toString() {
+		return "SiteVo [no=" + no + ", title=" + title + ", welcome=" + welcome + ", profile=" + profile
+				+ ", description=" + description + "]";
+	}
+
 }
