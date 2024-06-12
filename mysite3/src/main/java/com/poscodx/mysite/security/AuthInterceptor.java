@@ -1,5 +1,8 @@
 package com.poscodx.mysite.security;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedType;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -26,7 +29,12 @@ public class AuthInterceptor implements HandlerInterceptor {
 		// 3. handlerMethod의 @Auth 가져오기
 		Auth auth = handlerMethod.getMethodAnnotation(Auth.class);
 
-		// 4. HandlerMethod에 @Auth가 없는 경우 (인증 불필요)
+		// 4-1. HandlerMethod에 @Auth가 없는 경우 Class Type 에서 @Auth 를 탐색
+		if (auth == null) {
+			auth = handlerMethod.getBeanType().getAnnotation(Auth.class);
+		}
+
+		// 4-2. Method, Class Type 둘 다 @Auth가 없는 경우 (인증 불필요)
 		if (auth == null) {
 			return true;
 		}
@@ -40,7 +48,21 @@ public class AuthInterceptor implements HandlerInterceptor {
 			return false;
 		}
 
-		// 6. @Auth 가 붙어있고, 인증도 된 경우
+		// 6. 권한(Authorization) 체크를 위해 @Auth의 role 가져오기 ("USER", "ADMIN")
+		String role = auth.role();
+
+		// 7. @Auth role 이 "USER"인 경우, authUser의 role 은 상관없다.
+		if ("USER".equals(role)) {
+			return true;
+		}
+
+		// 8. @Auth role 이 "ADMIN"인 경우, authUser의 role 은 반드시 "ADMIN"
+		if (!"ADMIN".equals(authUser.getRole())) {
+			response.sendRedirect(request.getContextPath());
+			return false;
+		}
+
+		// 9. 옳은 관리자 권한 @Auth(role="ADMIN"), authUser.getRole() == "ADMIN"
 		return true;
 	}
 

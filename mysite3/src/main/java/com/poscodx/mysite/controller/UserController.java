@@ -1,7 +1,5 @@
 package com.poscodx.mysite.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,16 +46,16 @@ public class UserController {
 		model.addAttribute("userVo", vo);
 		return "user/update";
 	}
-	
+
 	@Auth
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public String update(@AuthUser UserVo authUser, UserVo vo, Model model) {
 		vo.setNo(authUser.getNo());
 		userService.update(vo);
-		
+
 		authUser.setName(vo.getName());
 		model.addAttribute("result", "success");
-		
+
 		return "redirect:/user/update";
 	}
 }

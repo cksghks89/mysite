@@ -37,8 +37,6 @@ public class BoardController {
 		}
 		
 		model.addAllAttributes(contentsList);
-		
-		
 		return "board/list";
 	}
 
